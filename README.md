@@ -1,5 +1,6 @@
 # NMRMind
-A Model Enabling the Converting from Multi-dimensional NMR Quantum Representations into Structures
+NMRMind: A Transformer-based Model Enabling the Elucidation from Multidimensional NMR to Structures![image](https://github.com/user-attachments/assets/8b16e153-0b2e-41fe-9672-516635bf7dbb)
+
 
 ## Environment
 ```
