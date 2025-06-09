@@ -529,11 +529,6 @@ def main(args):
         trainer_config["location"] = str(os.uname())
         with open(os.path.join(args.output_dir, "config.json"), "w") as f:
             json.dump(trainer_config, f, indent=4)
-        ## api key:
-        key="c4502bbeb58f74f2fda4d591994562ec43796cc1"
-        wandb.login(key=key)
-        wandb_run = wandb.init(project="cress_gen",
-                        name=args.output_dir, config=trainer_config)
         
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     if local_rank!=-1:
@@ -765,12 +760,6 @@ def main(args):
                     str_2 = "Learning rate = {}".format(
                         optimizer.state_dict()['param_groups'][0]['lr'])
                     logger.info(str_1 + "\n" + str_2)
-                    wandb_run.log({"epoch": epoch+1,
-                            "step": step,
-                            "completed_steps": completed_steps,
-                            "loss": train_loss_sum/(step + 1),
-                            "lr": optimizer.state_dict()['param_groups'][0]['lr'],
-                            })
             
             # train_score = get_score(train_pred_smiles_list, train_origin_smiles_list)
         
@@ -827,17 +816,6 @@ def main(args):
                         perplexity = math.exp(losses)
                     except OverflowError:
                         perplexity = float("inf")
-
-                    wandb_run.log({"epoch": epoch+1,
-                            "val_loss": losses,
-                            "perplexity": perplexity,
-                            #    "train_accurancy": train_score["accurancy"],
-                            #    "train_tanimoto_sim": train_score["tanimoto_sim"],
-                            #    "train_valid": train_score["valid"],
-                            "valid_accurancy": valid_score["accurancy"],
-                            "valid_tanimoto_sim": valid_score["tanimoto_sim"],
-                            "valid_valid": valid_score["valid"],
-                            })
 
                     logger.info(f"epoch {epoch+1}: perplexity: {perplexity}")
                     # logger.info("train_score:%s"%(json.dumps(train_score)))
